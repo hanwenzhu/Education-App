@@ -32,6 +32,12 @@ countries = (
 'Switzerland',
 'Thailand',
 'Turkey')
+vocab_file = open('rsc\\vocabs', 'rb')
+v = load(vocab_file)
+vocab_file.close()
+vocabs = {}
+for vo in sorted(v):
+	vocabs[vo] = v[vo]
 
 # main window
 tk = Tk.Tk()
@@ -123,6 +129,7 @@ timestable_win.tag_bind('back_button', '<Button-1>', back)
 # vocab window
 back_button3 = vocab_win.create_rectangle(10,10,130,70,fill='#AAAAAA',tags='back_button')
 back_text3 = vocab_win.create_text(20,20,text='Back',font=('Helvetica',32),anchor='nw',tags='back_button')
+vocab_bank = vocab_win.create_text(tk.winfo_width() - 20, 20, text='\n'.join(vocabs), font=('Helvetica', 16), anchor='ne')
 vocab_win.tag_bind('back_button', '<Button-1>', back)
 
 # main loop
