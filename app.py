@@ -7,6 +7,7 @@ from time import sleep
 from os import path
 from sys import exit
 from random import randint
+from pickle import load
 
 # Constants
 countries = (
@@ -31,7 +32,6 @@ countries = (
 'Switzerland',
 'Thailand',
 'Turkey')
-string = ''
 
 # main window
 tk = Tk.Tk()
@@ -85,14 +85,16 @@ flag_title = flag_win.create_text(530, 20, text='National Flags', font=('Helveti
 flags = {}
 for c in countries:
 	flags[c] = Tk.PhotoImage(file="rsc\\flags\\{0}.gif".format(c))
-	if flags[c].width() > tk.winfo_width() - 240:
-		flags[c].subsample(2,2);
-	elif flags[c].width()*2 < tk.winfo_width() - 240:
-		flags[c].zoom(2,2);
+	while flags[c].width() > tk.winfo_width() - 240 or flags[c].height() > tk.winfo_height()-120 or flags[c].width()*2 < tk.winfo_width() - 240 and 2*flags[c].height() < tk.winfo_height()-120:
+		if flags[c].width() > tk.winfo_width() - 240 or flags[c].height() > tk.winfo_height()-120:
+			flags[c] = flags[c].subsample(2,2)
+		elif flags[c].width()*2 < tk.winfo_width() - 240 and 2*flags[c].height() < tk.winfo_height()-120:
+			flags[c] = flags[c].zoom(2,2)
 current = countries[randint(0,len(countries)-1)]
 flag_image = flag_win.create_image(240,80,image=flags[current],anchor='nw')
 flag_str = ''
-flag_in_text = flag_win.create_text(240,tk.winfo_height()-40,text='',anchor="nw")
+flag_in_text = flag_win.create_text(240,tk.winfo_height()-40,text='',font=('Helvetica', 32),anchor="sw")
+flag_bank = flag_win.create_text(20, 90, text='\n'.join(countries), font=('Helvetica', 16), anchor='nw')
 def flag_check(*args):
 	global flag_str, current
 	if flag_str == current:
