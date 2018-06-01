@@ -1,0 +1,36 @@
+{"antagonist":
+"someone who offers opposition",
+"protagonist":
+"the principal character in a work of fiction",
+"epilogue":
+"a short speech by an actor at the end of a play",
+"legacy":
+"a gift of personal property by will",
+"lore":
+"knowledge gained through tradition or anecdote",
+"time":
+"the continuum of experience in which events pass to the past",
+"environment":
+"the totality of surrounding conditions",
+"interview":
+"the questioning of a person ; often conducted by journalists",
+"plot":
+"a small area of ground covered by specific vegetation",
+"etymology":
+"a history of a word",
+"alibi":
+"proof that someone accused of a crime could not have done it",
+"deductive reasoning":
+"reasoning from the general to the particular",
+"evidence":
+"knowledge on which to base belief",
+"inductive reasoning":
+"reasoning from detailed facts to general principles",
+"inference":
+"drawing a conclusion on the basis of circumstantial evidence",
+"investigator":
+"someone who inquires carefully",
+"mystery":
+"something that baffles understanding and cannot be explained",
+"problem solving":
+"the thought processes involved in solving a problem"}
