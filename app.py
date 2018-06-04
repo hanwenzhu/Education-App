@@ -36,8 +36,10 @@ vocab_file = open('rsc\\vocabs', 'rb')
 v = load(vocab_file)
 vocab_file.close()
 vocabs = {}
+vocab_words = []
 for vo in sorted(v):
-	vocabs[vo] = v[vo]
+	vocabs[vo.capitalize()] = v[vo]
+	vocab_words += [vo.capitalize()]
 
 # main window
 tk = Tk.Tk()
@@ -96,16 +98,16 @@ for c in countries:
 			flags[c] = flags[c].subsample(2,2)
 		elif flags[c].width()*2 < tk.winfo_width() - 240 and 2*flags[c].height() < tk.winfo_height()-120:
 			flags[c] = flags[c].zoom(2,2)
-current = countries[randint(0,len(countries)-1)]
-flag_image = flag_win.create_image(240,80,image=flags[current],anchor='nw')
+flag_current = countries[randint(0,len(countries)-1)]
+flag_image = flag_win.create_image(240,80,image=flags[flag_current],anchor='nw')
 flag_str = ''
 flag_in_text = flag_win.create_text(240,tk.winfo_height()-40,text='',font=('Helvetica', 32),anchor="sw")
 flag_bank = flag_win.create_text(20, 90, text='\n'.join(countries), font=('Helvetica', 16), anchor='nw')
 def flag_check(*args):
-	global flag_str, current
-	if flag_str == current:
-		current = countries[randint(0,len(countries)-1)]
-		flag_win.itemconfig(flag_image, image=flags[current],anchor='nw')
+	global flag_str, flag_current
+	if flag_str == flag_current:
+		flag_current = countries[randint(0,len(countries)-1)]
+		flag_win.itemconfig(flag_image, image=flags[flag_current],anchor='nw')
 		flag_str = ''
 		flag_win.itemconfig(flag_in_text, text=flag_str)
 def flag_input(event):
@@ -129,8 +131,31 @@ timestable_win.tag_bind('back_button', '<Button-1>', back)
 # vocab window
 back_button3 = vocab_win.create_rectangle(10,10,130,70,fill='#AAAAAA',tags='back_button')
 back_text3 = vocab_win.create_text(20,20,text='Back',font=('Helvetica',32),anchor='nw',tags='back_button')
-vocab_bank = vocab_win.create_text(tk.winfo_width() - 20, 20, text='\n'.join(vocabs), font=('Helvetica', 16), anchor='ne')
 vocab_win.tag_bind('back_button', '<Button-1>', back)
+vocab_current = vocab_words[randint(0, len(vocab_words)-1)]
+vocab_def = vocab_win.create_text(180,80,text=vocabs[vocab_current].capitalize(),font=('Helvetica', 32), anchor='nw')
+vocab_str = ''
+vocab_in_text = vocab_win.create_text(240,tk.winfo_height()-40,text='',font=('Helvetica', 32),anchor="sw")
+vocab_bank = vocab_win.create_text(tk.winfo_width() - 20, 200, text='\n'.join(vocab_words), font=('Helvetica', 16), anchor='ne')
+def vocab_check(*args):
+	global vocab_str, vocab_current
+	if vocab_str == vocab_current:
+		vocab_current = vocab_words[randint(0,len(vocab_words)-1)]
+		vocab_win.itemconfig(vocab_def, text=vocabs[vocab_current].capitalize())
+		vocab_str = ''
+		vocab_win.itemconfig(vocab_in_text, text=vocab_str)
+def vocab_input(event):
+	global vocab_str
+	vocab_str += event.char
+	vocab_str = ' '.join(map(str.capitalize, vocab_str.split(' ')))
+	vocab_win.itemconfig(vocab_in_text, text=vocab_str)
+def vocab_backspace(*args):
+	global vocab_str
+	vocab_str = vocab_str[:-1]
+	vocab_win.itemconfig(vocab_in_text, text=vocab_str)
+vocab_win.bind('<Key>', vocab_input)
+vocab_win.bind('<Return>', vocab_check)
+vocab_win.bind('<BackSpace>', vocab_backspace)
 
 # main loop
 tk.mainloop()
