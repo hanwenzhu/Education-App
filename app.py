@@ -127,7 +127,31 @@ flag_win.bind('<BackSpace>', flag_backspace)
 back_button2 = timestable_win.create_rectangle(10,10,130,70,fill='#AAAAAA',tags='back_button')
 back_text2 = timestable_win.create_text(20,20,text='Back',font=('Helvetica',32),anchor='nw',tags='back_button')
 timestable_win.tag_bind('back_button', '<Button-1>', back)
-timestable_win.create_text(530, 20, text='Times table', anchor = 'nw', font = ('Helvetica', 32))
+timestable_title = timestable_win.create_text(tk.winfo_width()/2, 50, text='Times table', font = ('Helvetica', 32))
+timestable_current = [randint(1,9),randint(1,9)]
+timestable_product = timestable_win.create_text(tk.winfo_width()/2,200,text='%d * %d' % (timestable_current[0],timestable_current[1]),font=('Helvetica', 64))
+timestable_str = ''
+timestable_in_text = timestable_win.create_text(tk.winfo_width()/2,tk.winfo_height()-80,text='',font=('Helvetica', 64))
+def timestable_check(*args):
+	global timestable_str, timestable_product, timestable_current
+	if timestable_str == str(timestable_current[0]*timestable_current[1]):
+		timestable_current = [randint(1,9),randint(1,9)]
+		timestable_win.itemconfig(timestable_product, text='%d * %d' % (timestable_current[0],timestable_current[1]))
+		timestable_str = ''
+		timestable_win.itemconfig(timestable_in_text, text=timestable_str)
+def timestable_input(event):
+	global timestable_str
+	timestable_str += event.char
+	timestable_win.itemconfig(timestable_in_text, text=timestable_str)
+def timestable_backspace(*args):
+	global timestable_str
+	timestable_str = timestable_str[:-1]
+	timestable_win.itemconfig(timestable_in_text, text=timestable_str)
+timestable_win.bind('<Key>', timestable_input)
+timestable_win.bind('<Return>', timestable_check)
+timestable_win.bind('<BackSpace>', timestable_backspace)
+
+
 
 # vocab window
 back_button3 = vocab_win.create_rectangle(10,10,130,70,fill='#AAAAAA',tags='back_button')
