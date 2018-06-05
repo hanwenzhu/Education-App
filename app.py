@@ -79,10 +79,10 @@ flag_button = main_menu.create_rectangle(500,150,800,220,fill='#00FF00',tags='fl
 flag_text = main_menu.create_text(510,160,text='National Flags',font=('Helvetica',32),anchor='nw',tags='flag_button')
 main_menu.tag_bind("flag_button",'<Button-1>',flag)
 timestable_button = main_menu.create_rectangle(500,240,800,310,fill='#00FF00',tags='timestable_button')
-timestable_text = main_menu.create_text(510,250,text='Times table',font=('Helvetica',32),anchor='nw',tags='timestable_button')
+timestable_text = main_menu.create_text(530,250,text='Times table',font=('Helvetica',32),anchor='nw',tags='timestable_button')
 main_menu.tag_bind("timestable_button",'<Button-1>',timestable)
 vocab_button = main_menu.create_rectangle(500,330,800,400,fill='#00FF00',tags='vocab_button')
-vocab_text = main_menu.create_text(510,340,text='Vocabulary',font=('Helvetica',32),anchor='nw',tags='vocab_button')
+vocab_text = main_menu.create_text(540,340,text='Vocabulary',font=('Helvetica',32),anchor='nw',tags='vocab_button')
 main_menu.tag_bind("vocab_button",'<Button-1>',vocab)
 
 # flag window
@@ -127,6 +127,7 @@ flag_win.bind('<BackSpace>', flag_backspace)
 back_button2 = timestable_win.create_rectangle(10,10,130,70,fill='#AAAAAA',tags='back_button')
 back_text2 = timestable_win.create_text(20,20,text='Back',font=('Helvetica',32),anchor='nw',tags='back_button')
 timestable_win.tag_bind('back_button', '<Button-1>', back)
+timestable_win.create_text(530, 20, text='Times table', anchor = 'nw', font = ('Helvetica', 32))
 
 # vocab window
 back_button3 = vocab_win.create_rectangle(10,10,130,70,fill='#AAAAAA',tags='back_button')
@@ -147,7 +148,7 @@ def vocab_check(*args):
 def vocab_input(event):
 	global vocab_str
 	vocab_str += event.char
-	vocab_str = ' '.join(map(str.capitalize, vocab_str.split(' ')))
+	vocab_str = vocab_str.capitalize()
 	vocab_win.itemconfig(vocab_in_text, text=vocab_str)
 def vocab_backspace(*args):
 	global vocab_str
