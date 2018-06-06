@@ -8,6 +8,7 @@ from os import path
 from sys import exit
 from random import randint
 from pickle import load
+from winsound import PlaySound, SND_FILENAME, SND_ASYNC
 
 # Constants
 countries = (
@@ -40,6 +41,12 @@ vocab_words = []
 for vo in sorted(v):
 	vocabs[vo.capitalize()] = v[vo]
 	vocab_words += [vo.capitalize()]
+def click_async():
+	PlaySound(None, SND_FILENAME)
+	PlaySound('rsc\\click.wav', SND_ASYNC)
+def click_sync():
+	PlaySound(None, SND_FILENAME)
+	PlaySound('rsc\\click.wav', SND_FILENAME)
 
 # main window
 tk = Tk.Tk()
@@ -60,18 +67,24 @@ vocab_win.grid(row=0, column=0)
 def flag(*args):
 	Tk.Misc.lift(flag_win)
 	flag_win.focus_set()
+	click_async()
 def timestable(*args):
 	Tk.Misc.lift(timestable_win)
 	timestable_win.focus_set()
+	click_async()
 def vocab(*args):
 	Tk.Misc.lift(vocab_win)
 	vocab_win.focus_set()
+	click_async()
 def back(*args):
 	Tk.Misc.lift(main_menu)
 	main_menu.focus_set()
-back()
+	click_async()
+Tk.Misc.lift(main_menu)
+main_menu.focus_set()
 def ex(*args):
-    exit(0)
+	click_sync()
+	exit(0)
 exit_button = main_menu.create_rectangle(10,10,130,70,fill='#FF0000',tags='exit_button')
 exit_text = main_menu.create_text(30,20,text='Exit',font=('Helvetica',32),anchor='nw',tags='exit_button')
 main_menu.tag_bind("exit_button","<Button-1>",ex)
