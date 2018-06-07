@@ -88,50 +88,55 @@ def ex(*args):
 exit_button = main_menu.create_rectangle(10,10,130,70,fill='#FF0000',tags='exit_button')
 exit_text = main_menu.create_text(30,20,text='Exit',font=('Helvetica',32),anchor='nw',tags='exit_button')
 main_menu.tag_bind("exit_button","<Button-1>",ex)
-flag_button = main_menu.create_rectangle(500,150,800,220,fill='#00FF00',tags='flag_button')
-flag_text = main_menu.create_text(510,160,text='National Flags',font=('Helvetica',32),anchor='nw',tags='flag_button')
+flag_button = main_menu.create_rectangle(tk.winfo_width()/2-150,150,tk.winfo_width()/2+150,220,fill='#00FF00',tags='flag_button')
+flag_text = main_menu.create_text(tk.winfo_width()/2,160,text='National Flags',font=('Helvetica',32),anchor='n',tags='flag_button')
 main_menu.tag_bind("flag_button",'<Button-1>',flag)
-timestable_button = main_menu.create_rectangle(500,240,800,310,fill='#00FF00',tags='timestable_button')
-timestable_text = main_menu.create_text(530,250,text='Times table',font=('Helvetica',32),anchor='nw',tags='timestable_button')
+timestable_button = main_menu.create_rectangle(tk.winfo_width()/2-150,240,tk.winfo_width()/2+150,310,fill='#00FF00',tags='timestable_button')
+timestable_text = main_menu.create_text(tk.winfo_width()/2,250,text='Times table',font=('Helvetica',32),anchor='n',tags='timestable_button')
 main_menu.tag_bind("timestable_button",'<Button-1>',timestable)
-vocab_button = main_menu.create_rectangle(500,330,800,400,fill='#00FF00',tags='vocab_button')
-vocab_text = main_menu.create_text(540,340,text='Vocabulary',font=('Helvetica',32),anchor='nw',tags='vocab_button')
+vocab_button = main_menu.create_rectangle(tk.winfo_width()/2-150,330,tk.winfo_width()/2+150,400,fill='#00FF00',tags='vocab_button')
+vocab_text = main_menu.create_text(tk.winfo_width()/2,340,text='Vocabulary',font=('Helvetica',32),anchor='n',tags='vocab_button')
 main_menu.tag_bind("vocab_button",'<Button-1>',vocab)
 
 # flag window
 back_button1 = flag_win.create_rectangle(10,10,130,70,fill='#AAAAAA',tags='back_button')
 back_text1 = flag_win.create_text(20,20,text='Back',font=('Helvetica',32),anchor='nw',tags='back_button')
 flag_win.tag_bind('back_button', '<Button-1>', back)
-flag_title = flag_win.create_text(530, 20, text='National Flags', font=('Helvetica', 32),anchor='nw')
+flag_title = flag_win.create_text(tk.winfo_width()/2, 20, text='National Flags', font=('Helvetica', 32), anchor='n')
 flags = {}
 for c in countries:
 	flags[c] = Tk.PhotoImage(file="rsc\\flags\\{0}.gif".format(c))
 	while flags[c].width() > tk.winfo_width() - 240 or flags[c].height() > tk.winfo_height()-150 or flags[c].width()*2 < tk.winfo_width() - 240 and 2*flags[c].height() < tk.winfo_height()-150:
 		if flags[c].width() > tk.winfo_width() - 240 or flags[c].height() > tk.winfo_height()-150:
-			flags[c] = flags[c].subsample(2,2)
-		elif flags[c].width()*2 < tk.winfo_width() - 240 and 2*flags[c].height() < tk.winfo_height()-150:
 			flags[c] = flags[c].zoom(2,2)
+			flags[c] = flags[c].subsample(3,3)
+		elif flags[c].width()*2 < tk.winfo_width() - 240 and 2*flags[c].height() < tk.winfo_height()-150:
+			flags[c] = flags[c].zoom(3,3)
+			flags[c] = flags[c].subsample(2,2)
 flag_current = countries[randint(0,len(countries)-1)]
+# flag_image = flag_win.create_image(tk.winfo_width()/2+120,tk.winfo_height()/2+5,image=flags[flag_current])
 flag_image = flag_win.create_image(240,80,image=flags[flag_current],anchor='nw')
 flag_str = ''
-flag_in_text = flag_win.create_text(240,tk.winfo_height()-40,text='',font=('Helvetica', 32),anchor="sw")
+flag_in_text = flag_win.create_text(240,tk.winfo_height()-40,text='Input the country name...',font=('Helvetica', 32),anchor="sw", fill='#aaaaaa')
 flag_bank = flag_win.create_text(20, 90, text='\n'.join(countries), font=('Helvetica', 16), anchor='nw')
 def flag_check(*args):
 	global flag_str, flag_current
 	if flag_str == flag_current:
 		flag_current = countries[randint(0,len(countries)-1)]
-		flag_win.itemconfig(flag_image, image=flags[flag_current],anchor='nw')
+		flag_win.itemconfig(flag_image, image=flags[flag_current])
 		flag_str = ''
-		flag_win.itemconfig(flag_in_text, text=flag_str)
+		flag_win.itemconfig(flag_in_text, text='Input the country name...',fill='#aaaaaa')
 def flag_input(event):
 	global flag_str
 	flag_str += event.char
 	flag_str = ' '.join(map(str.capitalize, flag_str.split(' ')))
-	flag_win.itemconfig(flag_in_text, text=flag_str)
+	flag_win.itemconfig(flag_in_text, text=flag_str,fill='#000000')
 def flag_backspace(*args):
 	global flag_str
 	flag_str = flag_str[:-1]
 	flag_win.itemconfig(flag_in_text, text=flag_str)
+	if len(flag_str)==0:
+		flag_win.itemconfig(flag_in_text, text='Input the country name...',fill='#aaaaaa')
 flag_win.bind('<Key>', flag_input)
 flag_win.bind('<Return>', flag_check)
 flag_win.bind('<BackSpace>', flag_backspace)
@@ -144,18 +149,18 @@ timestable_title = timestable_win.create_text(tk.winfo_width()/2, 50, text='Time
 timestable_current = [randint(1,9),randint(1,9)]
 timestable_product = timestable_win.create_text(tk.winfo_width()/2,200,text='%d * %d' % (timestable_current[0],timestable_current[1]),font=('Helvetica', 64))
 timestable_str = ''
-timestable_in_text = timestable_win.create_text(tk.winfo_width()/2,tk.winfo_height()-80,text='',font=('Helvetica', 64))
+timestable_in_text = timestable_win.create_text(tk.winfo_width()/2,tk.winfo_height()-80,text='Input product...',font=('Helvetica', 64), fill='#aaaaaa')
 def timestable_check(*args):
 	global timestable_str, timestable_product, timestable_current
 	if timestable_str == str(timestable_current[0]*timestable_current[1]):
 		timestable_current = [randint(1,9),randint(1,9)]
 		timestable_win.itemconfig(timestable_product, text='%d * %d' % (timestable_current[0],timestable_current[1]))
 		timestable_str = ''
-		timestable_win.itemconfig(timestable_in_text, text=timestable_str)
+		timestable_win.itemconfig(timestable_in_text, text='Input product...',fill='#aaaaaa')
 def timestable_input(event):
 	global timestable_str
 	timestable_str += event.char
-	timestable_win.itemconfig(timestable_in_text, text=timestable_str)
+	timestable_win.itemconfig(timestable_in_text, text=timestable_str, fill='#000000')
 def timestable_backspace(*args):
 	global timestable_str
 	timestable_str = timestable_str[:-1]
