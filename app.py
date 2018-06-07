@@ -165,6 +165,8 @@ def timestable_backspace(*args):
 	global timestable_str
 	timestable_str = timestable_str[:-1]
 	timestable_win.itemconfig(timestable_in_text, text=timestable_str)
+	if len(timestable_str) == 0:
+		timestable_win.itemconfig(timestable_in_text, text='Input product...',fill='#aaaaaa')
 timestable_win.bind('<Key>', timestable_input)
 timestable_win.bind('<Return>', timestable_check)
 timestable_win.bind('<BackSpace>', timestable_backspace)
@@ -178,7 +180,7 @@ vocab_win.tag_bind('back_button', '<Button-1>', back)
 vocab_current = vocab_words[randint(0, len(vocab_words)-1)]
 vocab_def = vocab_win.create_text(180,80,text=vocabs[vocab_current].capitalize(),font=('Helvetica', 32), anchor='nw')
 vocab_str = ''
-vocab_in_text = vocab_win.create_text(240,tk.winfo_height()-40,text='',font=('Helvetica', 32),anchor="sw")
+vocab_in_text = vocab_win.create_text(240,tk.winfo_height()-40,text='Input vocabulary...',font=('Helvetica', 32),anchor="sw", fill='#aaaaaa')
 vocab_bank = vocab_win.create_text(tk.winfo_width() - 20, 200, text='\n'.join(vocab_words), font=('Helvetica', 16), anchor='ne')
 def vocab_check(*args):
 	global vocab_str, vocab_current
@@ -186,16 +188,18 @@ def vocab_check(*args):
 		vocab_current = vocab_words[randint(0,len(vocab_words)-1)]
 		vocab_win.itemconfig(vocab_def, text=vocabs[vocab_current].capitalize())
 		vocab_str = ''
-		vocab_win.itemconfig(vocab_in_text, text=vocab_str)
+		vocab_win.itemconfig(vocab_in_text, text='Input vocabulary...',fill='#aaaaaa')
 def vocab_input(event):
 	global vocab_str
 	vocab_str += event.char
 	vocab_str = vocab_str.capitalize()
-	vocab_win.itemconfig(vocab_in_text, text=vocab_str)
+	vocab_win.itemconfig(vocab_in_text, text=vocab_str,fill='#000000')
 def vocab_backspace(*args):
 	global vocab_str
 	vocab_str = vocab_str[:-1]
 	vocab_win.itemconfig(vocab_in_text, text=vocab_str)
+	if len(vocab_str)==0:
+		vocab_win.itemconfig(vocab_in_text, text='Input vocabulary...', fill='#aaaaaa')
 vocab_win.bind('<Key>', vocab_input)
 vocab_win.bind('<Return>', vocab_check)
 vocab_win.bind('<BackSpace>', vocab_backspace)
