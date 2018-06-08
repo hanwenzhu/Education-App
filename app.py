@@ -106,11 +106,11 @@ flag_title = flag_win.create_text(tk.winfo_width()/2, 20, text='National Flags',
 flags = {}
 for c in countries:
 	flags[c] = Tk.PhotoImage(file="rsc\\flags\\{0}.gif".format(c))
-	while flags[c].width() > tk.winfo_width() - 240 or flags[c].height() > tk.winfo_height()-150 or flags[c].width()*2 < tk.winfo_width() - 240 and 2*flags[c].height() < tk.winfo_height()-150:
-		if flags[c].width() > tk.winfo_width() - 240 or flags[c].height() > tk.winfo_height()-150:
+	while (flags[c].width() > tk.winfo_width() - 240 or flags[c].height() > tk.winfo_height()-160) or (flags[c].width()*1.5 < tk.winfo_width() - 240 and 1.5*flags[c].height() < tk.winfo_height()-160):
+		if flags[c].width() > tk.winfo_width() - 240 or flags[c].height() > tk.winfo_height()-160:
 			flags[c] = flags[c].zoom(2,2)
 			flags[c] = flags[c].subsample(3,3)
-		elif flags[c].width()*2 < tk.winfo_width() - 240 and 2*flags[c].height() < tk.winfo_height()-150:
+		elif flags[c].width()*1.5 < tk.winfo_width() - 240 and 1.5*flags[c].height() < tk.winfo_height()-160:
 			flags[c] = flags[c].zoom(3,3)
 			flags[c] = flags[c].subsample(2,2)
 flag_current = countries[randint(0,len(countries)-1)]
